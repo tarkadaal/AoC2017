@@ -2,26 +2,35 @@
 import sys
 from collections import deque
 
-def solve(index_func):
-  for line in open('puzzle-1-1.txt', 'r'):
-    ints = [int(x) for x in line.strip()]
+
+def solve(data, index_func):
+    ints = [int(x) for x in data.strip()]
     d = deque(ints)
     l = len(d)
     s = 0
     for i in range(l):
-      x = d[0]
-      y = d[index_func(d)]
-      if x == y:
-        s += x
-      d.rotate(-1)
-    print(str(s))
+        x = d[0]
+        y = d[index_func(d)]
+        if x == y:
+            s += x
+        d.rotate(-1)
+    return s
+
+def check_arguments(args):
+    return len(args) == 2 and args[1] in ('1', '2')
 
 if __name__ == '__main__':
-  if len(sys.argv) == 2:
-    part = int(sys.argv[1])
-    if part == 1:
-      solve(lambda x: 1)
-    elif part == 2:
-      solve(lambda x: len(x)/2)
-  else:
-    print("Invalid number of arguments")
+    if not check_arguments(sys.argv):
+        print('Invalid argments. Script takes one "part" argument, 1 or 2.')
+        quit()
+
+    with open('puzzle-1-1.txt', 'r') as f:
+        input_data = f.read()
+
+    funcs = {
+        "1": lambda x: 1,
+        "2": lambda x: len(x) / 2
+    }
+    func = funcs[sys.argv[1]]
+    result = solve(input_data, func)
+    print(result)
