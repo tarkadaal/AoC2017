@@ -6,13 +6,11 @@ from collections import deque
 def solve(data, index_func):
     ints = [int(x) for x in data.strip()]
     d = deque(ints)
-    l = len(d)
     s = 0
-    for i in range(l):
+    for i in range(len(d)):
         x = d[0]
         y = d[index_func(d)]
-        if x == y:
-            s += x
+        s += x if x==y else 0
         d.rotate(-1)
     return s
 
