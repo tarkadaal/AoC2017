@@ -70,6 +70,8 @@ def test_solve(n):
     2
     >>> solve(1024)
     31
+    >>> solve(312051)
+    430
     """
     pass
 
@@ -79,6 +81,8 @@ def test_solve2(n):
     2
     >>> solve2(2)
     4
+    >>> solve2(312051)
+    312453
     """
     pass
 
