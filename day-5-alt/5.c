@@ -32,7 +32,6 @@ int main(void)
     char *content;
     char *token;
     int size;
-    size = atoi("-3");
     size = ae_load_file_to_memory("input.txt", &content);
     const char delim = '\n';
     token = strtok(content, &delim);
