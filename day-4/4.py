@@ -1,28 +1,23 @@
 #!/usr/bin/python
 
-def is_valid(passphrase):
-    words = passphrase.strip().split()
-    if words == []: 
-        return False
-    s = set()
-    for word in words:
-        if word in s:
-            return False
-        s.add(word)
-    return True
-
-
-def is_valid_anagram(passphrase):
+def _solve(passphrase, process_word):
     words = passphrase.strip().split()
     if words == []:
         return False
     s = set()
     for word in words:
-        word = "".join(sorted(word))
-        if word in s:
+        w = process_word(word)
+        if w in s:
             return False
-        s.add(word)
+        s.add(w)
     return True
+
+def is_valid(passphrase):
+    return _solve(passphrase, lambda x: x)
+
+
+def is_valid_anagram(passphrase):
+    return _solve(passphrase, lambda x: "".join(sorted(x)))
 
 def test_is_valid():
     """

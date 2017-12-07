@@ -7,8 +7,9 @@ DOWNRIGHT   = (1, 1)
 DOWN        = (0, 1)
 DOWNLEFT    = (-1, 1)
 LEFT        = (-1, 0)
+CENTRE      = (0, 0)
 
-ALL_DIRECTIONS = (UPLEFT, UP, UPRIGHT, RIGHT, DOWNRIGHT, DOWN, DOWNLEFT, LEFT)
+ALL_DIRECTIONS = (UPLEFT, UP, UPRIGHT, RIGHT, DOWNRIGHT, DOWN, DOWNLEFT, LEFT, CENTRE)
 
 WIDDERSHINS = {
     UP: LEFT,
@@ -24,15 +25,15 @@ def manhattan_distance(start, end):
     return abs(end[0] - start[0]) + abs(end[1] - start[1])
 
 def sum_neighbours(pos, board):
-    return sum(map(lambda x: board[pos[0] + x[0]][pos[1] + x[1]], ALL_DIRECTIONS)) + board[pos[0]][pos[1]]
+    return sum(map(lambda x: board[pos[0] + x[0]][pos[1] + x[1]], ALL_DIRECTIONS)) 
 
 def get_cell_to_left(pos, dir, board):
     left = WIDDERSHINS[dir]
     newpos = pos[0] + left[0], pos[1] + left[1]
     return board[newpos[0]][newpos[1]]
 
-def move_to_next(this_cell, pos, dir, board):
-    board[pos[0]][pos[1]] = this_cell
+def move_to_next(new_cell_value, pos, dir, board):
+    board[pos[0]][pos[1]] = new_cell_value
     if get_cell_to_left(pos, dir, board) == 0:
         dir = WIDDERSHINS[dir]
     pos = pos[0] + dir[0], pos[1] + dir[1]
@@ -40,17 +41,17 @@ def move_to_next(this_cell, pos, dir, board):
 
 def _solve(target, pos, dir, board):
     for x in xrange(1, target + 1):
-        this_cell = x
+        new_cell_value = x
         if target == x:
             return manhattan_distance(START, pos)
-        pos, dir, board = move_to_next(this_cell, pos, dir, board)
+        pos, dir, board = move_to_next(new_cell_value, pos, dir, board)
 
 def _solve2(target, pos, dir, board):
     for x in xrange(1, 10000000 + 1):
-        this_cell = sum_neighbours(pos, board)
-        if target < this_cell:
-            return this_cell
-        pos, dir, board = move_to_next(this_cell, pos, dir, board)
+        new_cell_value = sum_neighbours(pos, board)
+        if target < new_cell_value:
+            return new_cell_value
+        pos, dir, board = move_to_next(new_cell_value, pos, dir, board)
 
 def solve(n):
     return _solve(n, START, DOWN, [[0] * 1000 for i in range(1000)])
