@@ -1,24 +1,20 @@
 #!/usr/bin/python
 
-def maze_escape(maze):
+def _maze_escape(maze, inc_func):
     step_total = 0
     current_index = 0
     while -1 < current_index < len(maze):
         step_total += 1
         instruction = maze[current_index]
-        maze[current_index] += 1
+        maze[current_index] += inc_func(instruction)
         current_index += instruction
     return step_total
 
+def maze_escape(maze):
+    return _maze_escape(maze, lambda x: 1)
+
 def maze_escape_2(maze):
-    step_total = 0
-    current_index = 0
-    while -1 < current_index < len(maze):
-        step_total += 1
-        instruction = maze[current_index]
-        maze[current_index] += 1 if instruction < 3 else -1
-        current_index += instruction
-    return step_total
+    return _maze_escape(maze, lambda x: 1 if x < 3 else -1)
 
 def test_maze_escape():
     """
