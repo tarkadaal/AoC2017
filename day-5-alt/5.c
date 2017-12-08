@@ -25,27 +25,34 @@ int ae_load_file_to_memory(const char *filename, char **result)
     return size;
 }
 
-int main(void)
+int convert_strings_to_ints(char *content, int *instructions)
 {
-    const int maze_size = 1044;
-    int instructions[maze_size];
-    char *content;
-    int size;
-    size = ae_load_file_to_memory("input.txt", &content);
-    printf("size %d\n", size);
-
-    const char delim = '\n';
-    char *token;
-    token = strtok(content, &delim);
     int fill_index = 0;
+    const char *delim = "\n";
+    char *token;
+    token = strtok(content, delim);
 
     while (token != NULL)
     {
         instructions[fill_index] = atoi(token);
         fill_index++;
 
-        token = strtok(NULL, &delim);
+        token = strtok(NULL, delim);
     }
+    return fill_index;
+}
+
+int main(void)
+{
+    const int maze_size = 1044;
+    int instructions[maze_size];
+    int fill_index = 0;
+    char *content;
+    int size;
+    size = ae_load_file_to_memory("input.txt", &content);
+    printf("size %d\n", size);
+
+    fill_index = convert_strings_to_ints(content, instructions);
     printf("Fille index %d\n", fill_index);
 
     int current_index = 0;

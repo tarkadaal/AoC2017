@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-
 int ae_load_file_to_memory(const char *filename, char **result)
 {
     int size = 0;
@@ -11,7 +9,7 @@ int ae_load_file_to_memory(const char *filename, char **result)
     if (f == NULL)
     {
         *result = NULL;
-        return -1; // -1 means file opening fail
+        return -1; 
     }
     fseek(f, 0, SEEK_END);
     size = ftell(f);
@@ -20,7 +18,7 @@ int ae_load_file_to_memory(const char *filename, char **result)
     if (size != fread(*result, sizeof(char), size, f))
     {
         free(*result);
-        return -2; // -2 means file reading fail
+        return -2; 
     }
     fclose(f);
     (*result)[size] = 0;
@@ -29,38 +27,19 @@ int ae_load_file_to_memory(const char *filename, char **result)
 
 int main(void)
 {
-    const int maze_size = 1044;
-    int instructions[maze_size];
     int fill_index = 0;
-    const char delim = '\n';
+    const char *delim = "\n";
     char *token = NULL;
     char *content = NULL;
-    int size = 0;
-    int current_index = 0;
-    int step_total = 0;
-    int current_instruction = 0;
-    size = ae_load_file_to_memory("input.txt", &content);
-    printf("size %d\n", size);
 
+    ae_load_file_to_memory("input.txt", &content);
 
-    token = strtok(content, &delim);
+    token = strtok(content, delim);
 
     while (token != NULL)
     {
-        instructions[fill_index] = atoi(token);
         fill_index++;
-
-        token = strtok(NULL, &delim);
+        token = strtok(NULL, delim);
     }
-    printf("Fille index %d\n", fill_index);
-
-
-    while (-1 < current_index && current_index < fill_index )
-    {
-        step_total++;
-        current_instruction = instructions[current_index];
-        instructions[current_index] += current_instruction < 3 ? 1 : -1;
-        current_index += current_instruction;
-    };
-    printf("%d\n", step_total);
+    printf("Fill index %d\n", fill_index);
 }
