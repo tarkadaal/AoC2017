@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+
 int ae_load_file_to_memory(const char *filename, char **result)
 {
     int size = 0;
@@ -14,7 +16,7 @@ int ae_load_file_to_memory(const char *filename, char **result)
     fseek(f, 0, SEEK_END);
     size = ftell(f);
     fseek(f, 0, SEEK_SET);
-    *result = (char *)malloc(size + 1);
+    *result = (char *)malloc(sizeof(char) * (size + 1));
     if (size != fread(*result, sizeof(char), size, f))
     {
         free(*result);
@@ -29,15 +31,19 @@ int main(void)
 {
     const int maze_size = 1044;
     int instructions[maze_size];
-    char *content;
-    int size;
+    int fill_index = 0;
+    const char delim = '\n';
+    char *token = NULL;
+    char *content = NULL;
+    int size = 0;
+    int current_index = 0;
+    int step_total = 0;
+    int current_instruction = 0;
     size = ae_load_file_to_memory("input.txt", &content);
     printf("size %d\n", size);
 
-    const char delim = '\n';
-    char *token;
+
     token = strtok(content, &delim);
-    int fill_index = 0;
 
     while (token != NULL)
     {
@@ -48,9 +54,7 @@ int main(void)
     }
     printf("Fille index %d\n", fill_index);
 
-    int current_index = 0;
-    int step_total = 0;
-    int current_instruction = 0;
+
     while (-1 < current_index && current_index < fill_index )
     {
         step_total++;
