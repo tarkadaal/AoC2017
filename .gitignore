@@ -105,3 +105,6 @@ venv.bak/
 
 .vscode/
 *.exe
+
+# Generated Rust files
+/target/
